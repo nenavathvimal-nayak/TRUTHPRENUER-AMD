@@ -63,7 +63,7 @@ else
     log_fail "Platform submodule missing from ${PLATFORM_DIR}"
 fi
 
-# 3. ADMIN ISOLATION AUDIT (127.0.0.1:60135 & 60136)
+# 3. ADMIN ZERO-TRUST ISOLATION AUDIT (127.0.0.1:60135 & 60136)
 log_header "3. ADMIN ZERO-TRUST ISOLATION AUDIT"
 VITE_CONF="${ADMIN_DIR}/ADMIN/vite.config.ts"
 if [ -f "${VITE_CONF}" ] && grep -q "host: '127.0.0.1'" "${VITE_CONF}" && grep -q "port: 60135" "${VITE_CONF}"; then
@@ -112,7 +112,7 @@ fi
 # C. Platform API Tests
 if [ -x "${VENV_PY}" ]; then
     if "${VENV_PY}" -m pytest "${PLATFORM_DIR}/backend/tests/test_api_suite.py" -q >/dev/null 2>&1; then
-        log_pass "Platform API Pytest Suite (7 tests) passed completely"
+        log_pass "Platform API Pytest Suite (17 tests) passed completely"
     else
         log_fail "Platform API Pytest Suite failed"
     fi
@@ -129,6 +129,24 @@ if [ -x "${VENV_PY}" ]; then
     fi
 else
     log_warn "Python venv interpreter not found; skipping Platform Algorithms tests"
+fi
+
+# E. User Web React Application Build
+USER_WEB_DIR="${PLATFORM_DIR}/apps/web/react"
+if [ -d "${USER_WEB_DIR}" ]; then
+    if (cd "${USER_WEB_DIR}" && npm run build --silent >/dev/null 2>&1); then
+        log_pass "User Web React 19 / Vite 6 production build succeeded cleanly"
+    else
+        log_fail "User Web React production build failed"
+    fi
+
+    if (cd "${USER_WEB_DIR}" && npm test >/dev/null 2>&1); then
+        log_pass "User Web Node test suite passed completely"
+    else
+        log_fail "User Web Node test suite failed"
+    fi
+else
+    log_fail "User Web React application missing from ${USER_WEB_DIR}"
 fi
 
 # SUMMARY
