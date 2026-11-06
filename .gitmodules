@@ -1,0 +1,6 @@
+[submodule "TRUTHPRENUER-ADMIN"]
+	path = TRUTHPRENUER-ADMIN
+	url = https://github.com/nenavathvimal-nayak/TRUTHPRENUER-ADMIN.git
+[submodule "TRUTHPRENUER-PLATFORM"]
+	path = TRUTHPRENUER-PLATFORM
+	url = https://github.com/nenavathvimal-nayak/TRUTHPRENUER-PLATFORM.git
