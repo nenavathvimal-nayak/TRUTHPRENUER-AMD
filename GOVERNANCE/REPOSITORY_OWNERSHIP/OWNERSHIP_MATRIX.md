@@ -9,3 +9,4 @@
 | **Relational Database Schemas** | `TRUTHPRENUER-PLATFORM` | SQL / PostgreSQL 15 | Managed Supabase / Port 5432 |
 | **Proprietary Algorithms Engine** | `TRUTHPRENUER-PLATFORM` | Python 3.11 / NumPy | Embedded Service |
 | **Consumer Client Applications** | `Truthprenuer` | Dart / Flutter 3.29.0 | Web / iOS / Android / Desktop |
+

@@ -17,3 +17,4 @@ All relational database tables and triggers are managed sequentially inside `TRU
 - Every table created in PostgreSQL **MUST** have RLS enabled: `ALTER TABLE <table_name> ENABLE ROW LEVEL SECURITY;`.
 - Default behavior: Deny all operations unless explicitly permitted by an authorized policy.
 - Administrative queries must pass through server-side APIs authenticated with service-role credentials.
+

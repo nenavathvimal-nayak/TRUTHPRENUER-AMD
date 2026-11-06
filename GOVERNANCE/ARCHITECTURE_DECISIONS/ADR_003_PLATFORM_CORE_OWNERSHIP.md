@@ -16,3 +16,4 @@ Legacy copies in `Truthprenuer.git` will be cleaned, dedicating that repository 
 ## Consequences
 - Guaranteed single source of truth for all database changes and domain mathematics.
 - Cleaner mobile client repository focused strictly on user experience, UI components, and state management.
+

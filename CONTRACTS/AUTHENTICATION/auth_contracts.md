@@ -17,3 +17,4 @@
 - If `SUPABASE_JWT_SECRET` is unset or blank in production, the API service must fail fast at startup.
 - Unsigned, forged, malformed, or expired tokens return `HTTP 401 Unauthorized`.
 - Non-admin personas (`Founder`, `Investor`, `Creator`, `Professional`) attempting to access administrative endpoints return `HTTP 403 Forbidden`.
+

@@ -22,3 +22,4 @@ If you discover a security vulnerability within the Truthprenuer ecosystem, plea
 - All administrative requests require a cryptographically signed JWT with verified signature, active expiration, and role declared within server-managed `app_metadata`.
 - Client-writable `user_metadata` claims of administrative roles are rejected with HTTP 403 Forbidden.
 - Unverified, expired, or malformed tokens fail-closed with HTTP 401 Unauthorized.
+

@@ -16,3 +16,4 @@ The Administrative frontend and its local backend API must run strictly on local
 ## Consequences
 - Administrative operations can only be initiated by authorized operators with physical or secure VPN/SSH access to the designated operator machine.
 - Local API enforces origin validation, host header validation, and cryptographic JWT verification to prevent DNS rebinding and cross-site requests.
+

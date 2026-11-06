@@ -20,3 +20,4 @@ Adopt a multi-repository architecture coordinated by a parent orchestrator (`TRU
 - Independent release lifecycles and dedicated CI runners.
 - Cryptographic submodule gitlink (mode `160000`) pinning in the parent repository.
 - Parent updates are explicit, intentional, and verifiable.
+

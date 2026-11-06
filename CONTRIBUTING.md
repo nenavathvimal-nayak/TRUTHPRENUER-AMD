@@ -48,3 +48,4 @@ All repositories follow the Conventional Commits specification:
 - `refactor:` Code restructuring without feature alteration
 - `test:` Adding or modifying test suites
 - `security:` Security hardening and remediation
+

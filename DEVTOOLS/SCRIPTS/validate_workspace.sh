@@ -46,19 +46,21 @@ fi
 
 # 2. SUBMODULE REGISTRATION & BOUNDARIES
 log_header "2. SUBMODULE REGISTRATION & INTEGRITY"
-ADMIN_DIR="${WORKSPACE_ROOT}/TRUTHPRENUER-ADMIN"
-PLATFORM_DIR="${WORKSPACE_ROOT}/TRUTHPRENUER-PLATFORM"
+ADMIN_DIR="${WORKSPACE_ROOT}/REPOSITORIES/TRUTHPRENUER-ADMIN"
+PLATFORM_DIR="${WORKSPACE_ROOT}/REPOSITORIES/TRUTHPRENUER-PLATFORM"
 
 if [ -d "${ADMIN_DIR}" ]; then
-    log_pass "Admin repository present at ${ADMIN_DIR}"
+    ADMIN_SHA=$(git -C "${ADMIN_DIR}" rev-parse --short HEAD 2>/dev/null || echo "unknown")
+    log_pass "Admin submodule verified at REPOSITORIES/TRUTHPRENUER-ADMIN (Commit: ${ADMIN_SHA})"
 else
-    log_fail "Admin repository missing from ${ADMIN_DIR}"
+    log_fail "Admin submodule missing from ${ADMIN_DIR}"
 fi
 
 if [ -d "${PLATFORM_DIR}" ]; then
-    log_pass "Platform repository present at ${PLATFORM_DIR}"
+    PLATFORM_SHA=$(git -C "${PLATFORM_DIR}" rev-parse --short HEAD 2>/dev/null || echo "unknown")
+    log_pass "Platform submodule verified at REPOSITORIES/TRUTHPRENUER-PLATFORM (Commit: ${PLATFORM_SHA})"
 else
-    log_fail "Platform repository missing from ${PLATFORM_DIR}"
+    log_fail "Platform submodule missing from ${PLATFORM_DIR}"
 fi
 
 # 3. ADMIN ISOLATION AUDIT (127.0.0.1:60135 & 60136)
@@ -77,8 +79,16 @@ else
     log_fail "Admin API lacks loopback port 60136 enforcement"
 fi
 
-# 4. TEST SUITE INTEGRITY
-log_header "4. AUTOMATED TEST SUITE INTEGRITY"
+# 4. NESTED SUBMODULE REMOVAL AUDIT
+log_header "4. NESTED SUBMODULE REMOVAL AUDIT (ADMIN REPO)"
+if [ -f "${ADMIN_DIR}/.gitmodules" ] || [ -d "${ADMIN_DIR}/USERS/FLUTTER/taeed_flutter_source" ]; then
+    log_fail "Nested submodule still present in TRUTHPRENUER-ADMIN"
+else
+    log_pass "Nested submodule successfully removed from TRUTHPRENUER-ADMIN (Admin is clean child)"
+fi
+
+# 5. AUTOMATED TEST SUITE INTEGRITY
+log_header "5. AUTOMATED TEST SUITE INTEGRITY"
 
 # A. Admin UI Production Build
 if (cd "${ADMIN_DIR}/ADMIN" && npm run build --silent >/dev/null 2>&1); then
@@ -88,7 +98,7 @@ else
 fi
 
 # B. Admin API Tests
-VENV_PY="${ADMIN_DIR}/USERS/FLUTTER/taeed_flutter_source/backend/venv/bin/python3"
+VENV_PY="${PLATFORM_DIR}/backend/venv/bin/python3"
 if [ -x "${VENV_PY}" ]; then
     if "${VENV_PY}" -m pytest "${ADMIN_DIR}/ADMIN/TESTS/test_admin_api_suite.py" -q >/dev/null 2>&1; then
         log_pass "Local Admin API Pytest Suite (11 tests) passed completely"

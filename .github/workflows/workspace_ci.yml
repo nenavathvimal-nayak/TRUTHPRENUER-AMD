@@ -28,13 +28,19 @@ jobs:
       - name: Verify Submodule Gitlink Availability
         run: |
           git submodule status --recursive
+          RECORDED_ADMIN_SHA=$(git ls-tree HEAD REPOSITORIES/TRUTHPRENUER-ADMIN | awk '{print $3}')
+          RECORDED_PLATFORM_SHA=$(git ls-tree HEAD REPOSITORIES/TRUTHPRENUER-PLATFORM | awk '{print $3}')
+          echo "Recorded Admin SHA: ${RECORDED_ADMIN_SHA}"
+          echo "Recorded Platform SHA: ${RECORDED_PLATFORM_SHA}"
+          test -n "${RECORDED_ADMIN_SHA}"
+          test -n "${RECORDED_PLATFORM_SHA}"
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'npm'
-          cache-dependency-path: TRUTHPRENUER-ADMIN/ADMIN/package-lock.json
+          cache-dependency-path: REPOSITORIES/TRUTHPRENUER-ADMIN/ADMIN/package-lock.json
 
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -43,9 +49,9 @@ jobs:
 
       - name: Install Dependencies
         run: |
-          (cd TRUTHPRENUER-ADMIN/ADMIN && npm ci)
+          (cd REPOSITORIES/TRUTHPRENUER-ADMIN/ADMIN && npm ci)
           python -m pip install --upgrade pip
-          pip install -r TRUTHPRENUER-PLATFORM/backend/requirements.txt
+          pip install -r REPOSITORIES/TRUTHPRENUER-PLATFORM/backend/requirements.txt
 
       - name: Execute Master Ecosystem Validator
         run: |

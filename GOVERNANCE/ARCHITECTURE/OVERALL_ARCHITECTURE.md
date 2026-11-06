@@ -45,3 +45,4 @@ graph TD
 3. **Local API to Platform:**
    - Communicates server-to-server using TLS and service-role credentials.
    - Operates behind secure VPC or authenticated server endpoints.
+
