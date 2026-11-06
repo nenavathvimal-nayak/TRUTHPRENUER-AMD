@@ -84,3 +84,4 @@ Run the ecosystem validator to inspect repository boundaries, network isolation,
 ```bash
 ./DEVTOOLS/SCRIPTS/validate_workspace.sh
 ```
+# TRUTHPRENUER-AMD
