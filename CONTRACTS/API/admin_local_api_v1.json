@@ -1,0 +1,73 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Truthprenuer Local Privileged Admin API",
+    "version": "1.0.0",
+    "description": "Strict loopback-only privileged API for local administrative operator actions."
+  },
+  "servers": [
+    {
+      "url": "http://127.0.0.1:60136",
+      "description": "Strict Loopback Administrative Host"
+    }
+  ],
+  "paths": {
+    "/health": {
+      "get": {
+        "summary": "Admin API Health Check",
+        "responses": {
+          "200": { "description": "Admin API healthy" }
+        }
+      }
+    },
+    "/api/v1/admin/audit-logs": {
+      "get": {
+        "summary": "Read Immutable WORM Audit Logs",
+        "security": [{ "AdminBearerAuth": [] }],
+        "responses": {
+          "200": { "description": "Array of audit events" },
+          "401": { "description": "Invalid or missing token" },
+          "403": { "description": "Non-admin role rejected" }
+        }
+      }
+    },
+    "/api/v1/admin/users/{user_id}/suspend": {
+      "post": {
+        "summary": "Suspend Abusive User Account",
+        "security": [{ "AdminBearerAuth": [] }],
+        "parameters": [
+          { "name": "user_id", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["reason"],
+                "properties": {
+                  "reason": { "type": "string" },
+                  "duration_days": { "type": "integer", "default": 7 }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "User successfully suspended" },
+          "400": { "description": "Self-suspension blocked" },
+          "403": { "description": "Insufficient permissions" }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "AdminBearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}

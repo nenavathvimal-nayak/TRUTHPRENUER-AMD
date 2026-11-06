@@ -1,0 +1,78 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Truthprenuer Platform Public API",
+    "version": "1.0.0",
+    "description": "Public and user-facing API gateway contracts for Truthprenuer platform services."
+  },
+  "paths": {
+    "/health": {
+      "get": {
+        "summary": "Platform Health Liveness Probe",
+        "responses": {
+          "200": {
+            "description": "Service is healthy and responding",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "string", "example": "healthy" },
+                    "environment": { "type": "string" },
+                    "version": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ready": {
+      "get": {
+        "summary": "Platform Readiness Probe",
+        "responses": {
+          "200": {
+            "description": "Database and external connections ready"
+          }
+        }
+      }
+    },
+    "/api/v1/ai/validate": {
+      "post": {
+        "summary": "AI Hypothesis Empirical Validation",
+        "security": [{ "BearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["problem", "solution"],
+                "properties": {
+                  "problem": { "type": "string" },
+                  "solution": { "type": "string" },
+                  "target_audience": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Validation result returned" },
+          "401": { "description": "Unauthorized / Missing Token" },
+          "429": { "description": "Rate limit exceeded" }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}
